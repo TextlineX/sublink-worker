@@ -16,7 +16,7 @@ export const UNIFIED_RULES = [
 	},
 	{
 		name: '游戏直连',
-		site_rules: ['kg-mc'],
+		site_rules: ['kg-mc','steam-driect'],
 		ip_rules: [],
 		outbound: 'DIRECT'
 	},
@@ -159,7 +159,9 @@ export const SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 				url: EXTERNAL_GAMING_DIRECT_URL,
 				download_detour: 'outboundNames.Auto Select'
 			};
-		} else {
+				} else if (site_rule === 'steam-driect') {
+			acc[site_rule] = EXTERNAL_STEAM_DRIECT_URL;
+} else {
 			acc[site_rule] = `geosite-${site_rule}.srs`;
 		}
 	});
