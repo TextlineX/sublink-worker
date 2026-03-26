@@ -131,6 +131,7 @@ export const translations = {
       'Cloud Services': '☁️ 云服务',
       'Non-China': '🌐 非中国',
       'Manual Switch': '🖐️ 手动切换',
+
       'GLOBAL': 'GLOBAL'
     },
     generalSettings: '通用设置',

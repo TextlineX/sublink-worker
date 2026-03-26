@@ -10,7 +10,9 @@ export const CLASH_IP_RULE_SET_BASE_URL = 'https://gh-proxy.com/https://github.c
 export const SURGE_SITE_RULE_SET_BASEURL = 'https://gh-proxy.com/https://github.com/NSZA156/surge-geox-rules/raw/refs/heads/release/geo/geosite/'
 export const SURGE_IP_RULE_SET_BASEURL = 'https://gh-proxy.com/https://github.com/NSZA156/surge-geox-rules/raw/refs/heads/release/geo/geoip/'
 
-// 第三方增强型广告过滤规则
+// AdBlock_Rule_For_Sing-box
 export const EXTERNAL_ADBLOCK_REIJI_URL = 'https://gh-proxy.com/https://raw.githubusercontent.com/REIJI007/AdBlock_Rule_For_Sing-box/main/adblock_reject.srs';
+//adblockfilters
 export const EXTERNAL_ADBLOCK_217_URL = 'https://gh-proxy.com/https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblocksingbox.srs';
+//游戏直连
 export const EXTERNAL_GAMING_DIRECT_URL = 'https://gh-proxy.com/https://github.com/TextlineX/GameRules/releases/latest/download/Gaming-Direct.srs';

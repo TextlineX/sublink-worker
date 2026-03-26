@@ -158,7 +158,7 @@ export const SING_BOX_CONFIG_V1_11 = {
 		interval: '30m'
 	},
 	inbounds: [
-		{ type: 'mixed', tag: 'mixed-in', listen: '0.0.0.0', listen_port: 2080 },
+		{ type: 'mixed', tag: 'mixed-in', listen: '0.0.0.0', listen_port: 20122 },
 		{ type: 'tun', tag: 'tun-in', address: '172.19.0.1/30', auto_route: true, strict_route: true, stack: 'mixed', sniff: true }
 	],
 	outbounds: [
