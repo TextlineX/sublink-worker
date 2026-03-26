@@ -3,7 +3,7 @@
  * Contains unified rule structure and predefined rule sets
  */
 
-import { EXTERNAL_ADBLOCK_REIJI_URL, EXTERNAL_ADBLOCK_217_URL, EXTERNAL_GAMING_DIRECT_URL } from './ruleUrls.js';
+import { EXTERNAL_ADBLOCK_REIJI_URL, EXTERNAL_ADBLOCK_217_URL, EXTERNAL_GAMING_DIRECT_URL, EXTERNAL_STEAM_DIRECT_URL } from './ruleUrls.js';
 
 export const CUSTOM_RULES = [];
 
@@ -16,7 +16,7 @@ export const UNIFIED_RULES = [
 	},
 	{
 		name: '游戏直连',
-		site_rules: ['kg-mc','steam-driect'],
+		site_rules: ['kg-mc','steam-direct'],
 		ip_rules: [],
 		outbound: 'DIRECT'
 	},
@@ -159,8 +159,8 @@ export const SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 				url: EXTERNAL_GAMING_DIRECT_URL,
 				download_detour: 'outboundNames.Auto Select'
 			};
-				} else if (site_rule === 'steam-driect') {
-			acc[site_rule] = EXTERNAL_STEAM_DRIECT_URL;
+				} else if (site_rule === 'steam-direct') {
+			acc[site_rule] = EXTERNAL_STEAM_DIRECT_URL;
 } else {
 			acc[site_rule] = `geosite-${site_rule}.srs`;
 		}

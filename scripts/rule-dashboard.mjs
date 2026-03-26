@@ -31,12 +31,25 @@ async function saveRules(rules, urlMappings = {}) {
     // 1. 更新 URL 映射
     for (const [tag, url] of Object.entries(urlMappings)) {
         const key = `EXTERNAL_${tag.toUpperCase().replace(/[-\s]/g, '_')}_URL`;
+        
+        // 更新 ruleUrls.js
         if (!urlsContent.includes(key)) {
             urlsContent = urlsContent.trim() + `\nexport const ${key} = '${url}';\n`;
             
             // 在 rules.js 生成映射逻辑
             const injection = `		} else if (site_rule === '${tag}') {\n			acc[site_rule] = ${key};`;
             rulesContent = rulesContent.replace(/(if \(site_rule === 'reiji-adblock'\) {[\s\S]*?)(} else {)/, `$1${injection}\n$2`);
+            
+            // 更新 rules.js 的 import
+            const importMatch = rulesContent.match(/import { ([\s\S]*?) } from '\.\/ruleUrls\.js';/);
+            if (importMatch) {
+                const imports = importMatch[1].split(',').map(i => i.trim());
+                if (!imports.includes(key)) {
+                    imports.push(key);
+                    const newImportLine = `import { ${imports.join(', ')} } from './ruleUrls.js';`;
+                    rulesContent = rulesContent.replace(/import { [\s\S]*? } from '\.\/ruleUrls\.js';/, newImportLine);
+                }
+            }
         }
     }
     await fs.writeFile(RULE_URLS_PATH, urlsContent);
