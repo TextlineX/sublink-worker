@@ -1,6 +1,6 @@
 import { BaseConfigBuilder } from './BaseConfigBuilder.js';
 import { groupProxiesByCountry } from '../utils.js';
-import { SURGE_CONFIG, SURGE_SITE_RULE_SET_BASEURL, SURGE_IP_RULE_SET_BASEURL, generateRules, getOutbounds, PREDEFINED_RULE_SETS, DIRECT_DEFAULT_RULES } from '../config/index.js';
+import { SURGE_CONFIG, SURGE_SITE_RULE_SET_BASEURL, SURGE_IP_RULE_SET_BASEURL, generateRules, getOutbounds, PREDEFINED_RULE_SETS, DIRECT_DEFAULT_RULES, REJECT_DEFAULT_RULES } from '../config/index.js';
 import { addProxyWithDedup } from './helpers/proxyHelpers.js';
 import { buildSelectorMembers, buildNodeSelectMembers, uniqueNames } from './helpers/groupBuilder.js';
 
@@ -285,6 +285,10 @@ export class SurgeConfigBuilder extends BaseConfigBuilder {
                 // For rules that should default to DIRECT, move DIRECT to the front
                 if (DIRECT_DEFAULT_RULES.has(outbound)) {
                     options = ['DIRECT', ...options.filter(p => p !== 'DIRECT')];
+                }
+                // For rules that should default to REJECT, move REJECT to the front
+                if (REJECT_DEFAULT_RULES.has(outbound)) {
+                    options = ['REJECT', ...options.filter(p => p !== 'REJECT')];
                 }
                 this.config['proxy-groups'].push(
                     this.createProxyGroup(name, 'select', options)

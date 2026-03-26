@@ -9,18 +9,13 @@ export const CUSTOM_RULES = [];
 
 export const UNIFIED_RULES = [
 	{
-		name: 'Enhanced AdBlock (REIJI)',
-		site_rules: ['reiji-adblock'],
+		name: '广告拦截',
+		site_rules: ['reiji-adblock', '217-adblock'],
 		ip_rules: []
 	},
 	{
-		name: 'Enhanced AdBlock (217)',
-		site_rules: ['217-adblock'],
-		ip_rules: []
-	},
-	{
-		name: 'Gaming-Direct',
-		site_rules: ['gaming-direct'],
+		name: '游戏直连',
+		site_rules: ['kg-mc'],
 		ip_rules: []
 	},
 	{
@@ -126,11 +121,14 @@ export const UNIFIED_RULES = [
 ];
 
 // Rule names that should default to DIRECT instead of Node Select
-export const DIRECT_DEFAULT_RULES = new Set(['Private', 'Location:CN', 'Gaming-Direct']);
+export const DIRECT_DEFAULT_RULES = new Set(['Private', 'Location:CN', '游戏直连']);
+
+// Rule names that should default to REJECT (Block) instead of Node Select
+export const REJECT_DEFAULT_RULES = new Set(['广告拦截']);
 
 export const PREDEFINED_RULE_SETS = {
 	minimal: ['Location:CN', 'Private', 'Non-China'],
-	balanced: ['Enhanced AdBlock (REIJI)', 'Enhanced AdBlock (217)', 'Gaming-Direct', 'Google Gemini', 'Adobe', 'Location:CN', 'Private', 'Non-China', 'Github', 'Google', 'Youtube', 'AI Services', 'Telegram'],
+	balanced: ['广告拦截', '游戏直连', 'Google Gemini', 'Adobe', 'Location:CN', 'Private', 'Non-China', 'Github', 'Google', 'Youtube', 'AI Services', 'Telegram'],
 	comprehensive: UNIFIED_RULES.map(rule => rule.name)
 };
 
@@ -141,7 +139,7 @@ export const SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 			acc[site_rule] = EXTERNAL_ADBLOCK_REIJI_URL;
 		} else if (site_rule === '217-adblock') {
 			acc[site_rule] = EXTERNAL_ADBLOCK_217_URL;
-		} else if (site_rule === 'gaming-direct') {
+		} else if (site_rule === 'kg-mc') {
 			acc[site_rule] = {
 				url: EXTERNAL_GAMING_DIRECT_URL,
 				download_detour: 'outboundNames.Auto Select'

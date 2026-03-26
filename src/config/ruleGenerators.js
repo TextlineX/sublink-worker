@@ -42,12 +42,20 @@ export function generateRules(selectedRules = [], customRules = []) {
 
 	UNIFIED_RULES.forEach(rule => {
 		if (selectedRules.includes(rule.name)) {
+			// For rules that should default to DIRECT, set outbound to 'DIRECT'
+			// For rules that should default to REJECT (Block), set outbound to 'REJECT'
+			let outbound = rule.name;
+			if (rule.name === '游戏直连') {
+				outbound = 'DIRECT';
+			} else if (rule.name === '广告拦截') {
+				outbound = 'REJECT';
+			}
 			rules.push({
 				site_rules: rule.site_rules,
 				ip_rules: rule.ip_rules,
 				domain_suffix: rule?.domain_suffix,
 				ip_cidr: rule?.ip_cidr,
-				outbound: rule.name
+				outbound: outbound
 			});
 		}
 	});
