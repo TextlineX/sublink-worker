@@ -3,9 +3,31 @@
  * Contains unified rule structure and predefined rule sets
  */
 
+import { EXTERNAL_ADBLOCK_REIJI_URL, EXTERNAL_ADBLOCK_217_URL } from './ruleUrls.js';
+
 export const CUSTOM_RULES = [];
 
 export const UNIFIED_RULES = [
+	{
+		name: 'Enhanced AdBlock (REIJI)',
+		site_rules: ['reiji-adblock'],
+		ip_rules: []
+	},
+	{
+		name: 'Enhanced AdBlock (217)',
+		site_rules: ['217-adblock'],
+		ip_rules: []
+	},
+	{
+		name: 'Google Gemini',
+		site_rules: ['google-gemini'],
+		ip_rules: []
+	},
+	{
+		name: 'Adobe',
+		site_rules: ['adobe'],
+		ip_rules: []
+	},
 	{
 		name: 'Ad Block',
 		site_rules: ['category-ads-all'],
@@ -103,14 +125,20 @@ export const DIRECT_DEFAULT_RULES = new Set(['Private', 'Location:CN']);
 
 export const PREDEFINED_RULE_SETS = {
 	minimal: ['Location:CN', 'Private', 'Non-China'],
-	balanced: ['Location:CN', 'Private', 'Non-China', 'Github', 'Google', 'Youtube', 'AI Services', 'Telegram'],
+	balanced: ['Enhanced AdBlock (REIJI)', 'Enhanced AdBlock (217)', 'Google Gemini', 'Adobe', 'Location:CN', 'Private', 'Non-China', 'Github', 'Google', 'Youtube', 'AI Services', 'Telegram'],
 	comprehensive: UNIFIED_RULES.map(rule => rule.name)
 };
 
 // Generate SITE_RULE_SETS and IP_RULE_SETS from UNIFIED_RULES
 export const SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 	rule.site_rules.forEach(site_rule => {
-		acc[site_rule] = `geosite-${site_rule}.srs`;
+		if (site_rule === 'reiji-adblock') {
+			acc[site_rule] = EXTERNAL_ADBLOCK_REIJI_URL;
+		} else if (site_rule === '217-adblock') {
+			acc[site_rule] = EXTERNAL_ADBLOCK_217_URL;
+		} else {
+			acc[site_rule] = `geosite-${site_rule}.srs`;
+		}
 	});
 	return acc;
 }, {});

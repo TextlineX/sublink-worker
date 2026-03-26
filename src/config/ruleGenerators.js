@@ -92,12 +92,16 @@ export function generateRuleSets(selectedRules = [], customRules = []) {
 		}
 	});
 
-	const site_rule_sets = Array.from(siteRuleSets).map(rule => ({
-		tag: rule,
-		type: 'remote',
-		format: 'binary',
-		url: `${SITE_RULE_SET_BASE_URL}${SITE_RULE_SETS[rule]}`,
-	}));
+	const site_rule_sets = Array.from(siteRuleSets).map(rule => {
+		const rulePath = SITE_RULE_SETS[rule];
+		const fullUrl = rulePath.startsWith('http') ? rulePath : `${SITE_RULE_SET_BASE_URL}${rulePath}`;
+		return {
+			tag: rule,
+			type: 'remote',
+			format: 'binary',
+			url: fullUrl,
+		};
+	});
 
 	const ip_rule_sets = Array.from(ipRuleSets).map(rule => ({
 		tag: `${rule}-ip`,
