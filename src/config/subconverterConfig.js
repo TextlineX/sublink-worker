@@ -9,7 +9,7 @@ import { COUNTRY_DATA } from '../utils.js';
 import { DIRECT_DEFAULT_RULES } from './rules.js';
 
 // Rule names that should default to REJECT
-const REJECT_RULES = new Set(['Ad Block']);
+const REJECT_RULES = new Set(['广告拦截']);
 
 const SPEED_TEST_URL = 'http://www.gstatic.com/generate_204';
 

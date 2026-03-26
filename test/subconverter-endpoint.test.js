@@ -122,7 +122,7 @@ describe('GET /subconverter', () => {
 
     it('maps Ad Block to REJECT', async () => {
         const app = createTestApp();
-        const rules = JSON.stringify(['Ad Block', 'Google']);
+        const rules = JSON.stringify(['广告拦截', 'Google']);
         const res = await app.request(`http://localhost/subconverter?selectedRules=${encodeURIComponent(rules)}`);
         const text = await res.text();
 

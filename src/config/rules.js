@@ -10,7 +10,7 @@ export const CUSTOM_RULES = [];
 export const UNIFIED_RULES = [
 	{
 		name: '广告拦截',
-		site_rules: ['reiji-adblock', '217-adblock'],
+		site_rules: ['reiji-adblock', '217-adblock', 'category-ads-all'],
 		ip_rules: []
 	},
 	{
@@ -28,11 +28,7 @@ export const UNIFIED_RULES = [
 		site_rules: ['adobe'],
 		ip_rules: []
 	},
-	{
-		name: 'Ad Block',
-		site_rules: ['category-ads-all'],
-		ip_rules: []
-	},
+
 	{
 		name: 'AI Services',
 		site_rules: ['category-ai-!cn',],
