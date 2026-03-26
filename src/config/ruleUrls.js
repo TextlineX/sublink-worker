@@ -15,4 +15,4 @@ export const EXTERNAL_ADBLOCK_REIJI_URL = 'https://gh-proxy.com/https://raw.gith
 //adblockfilters
 export const EXTERNAL_ADBLOCK_217_URL = 'https://gh-proxy.com/https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblocksingbox.srs';
 //游戏直连
-export const EXTERNAL_GAMING_DIRECT_URL = 'https://gh-proxy.com/https://github.com/TextlineX/GameRules/releases/download/nightly/ku-mc.srs';
+export const EXTERNAL_GAMING_DIRECT_URL = 'https://gh-proxy.com/https://github.com/TextlineX/GameRules/releases/download/nightly/kg-mc.srs';
