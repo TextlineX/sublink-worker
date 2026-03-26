@@ -592,14 +592,19 @@ export const formLogicFn = (t) => {
                 // Extract selectedRules
                 const selectedRules = params.get('selectedRules');
                 if (selectedRules) {
-                    try {
-                        const parsed = JSON.parse(selectedRules);
-                        if (Array.isArray(parsed)) {
-                            this.selectedRules = parsed;
-                            this.selectedPredefinedRule = 'custom';
+                    if (window.PREDEFINED_RULE_SETS && window.PREDEFINED_RULE_SETS[selectedRules]) {
+                        this.selectedPredefinedRule = selectedRules;
+                        this.applyPredefinedRule();
+                    } else {
+                        try {
+                            const parsed = JSON.parse(selectedRules);
+                            if (Array.isArray(parsed)) {
+                                this.selectedRules = parsed;
+                                this.selectedPredefinedRule = 'custom';
+                            }
+                        } catch (e) {
+                            console.warn('Failed to parse selectedRules:', e);
                         }
-                    } catch (e) {
-                        console.warn('Failed to parse selectedRules:', e);
                     }
                 }
 
