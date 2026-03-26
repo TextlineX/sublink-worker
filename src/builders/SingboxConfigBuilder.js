@@ -415,7 +415,7 @@ export class SingboxConfigBuilder extends BaseConfigBuilder {
 
     formatConfig() {
         const rules = generateRules(this.selectedRules, this.customRules);
-        const { site_rule_sets, ip_rule_sets } = generateRuleSets(this.selectedRules, this.customRules);
+        const { site_rule_sets, ip_rule_sets } = generateRuleSets(this.selectedRules, this.customRules, this.t);
 
         this.config.route.rule_set = [...site_rule_sets, ...ip_rule_sets];
 
