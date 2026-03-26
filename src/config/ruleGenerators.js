@@ -69,7 +69,7 @@ export function generateRules(selectedRules = [], customRules = []) {
 	return rules;
 }
 
-export function generateRuleSets(selectedRules = [], customRules = []) {
+export function generateRuleSets(selectedRules = [], customRules = [], t = (s) => s) {
 	if (typeof selectedRules === 'string' && PREDEFINED_RULE_SETS[selectedRules]) {
 		selectedRules = PREDEFINED_RULE_SETS[selectedRules];
 	}
@@ -93,13 +93,27 @@ export function generateRuleSets(selectedRules = [], customRules = []) {
 	});
 
 	const site_rule_sets = Array.from(siteRuleSets).map(rule => {
-		const rulePath = SITE_RULE_SETS[rule];
-		const fullUrl = rulePath.startsWith('http') ? rulePath : `${SITE_RULE_SET_BASE_URL}${rulePath}`;
+		const ruleConfig = SITE_RULE_SETS[rule];
+		let fullUrl;
+		let extra = {};
+
+		if (typeof ruleConfig === 'string') {
+			fullUrl = ruleConfig.startsWith('http') ? ruleConfig : `${SITE_RULE_SET_BASE_URL}${ruleConfig}`;
+		} else {
+			fullUrl = ruleConfig.url;
+			extra = { ...ruleConfig };
+			delete extra.url;
+			if (extra.download_detour) {
+				extra.download_detour = t(extra.download_detour);
+			}
+		}
+
 		return {
 			tag: rule,
 			type: 'remote',
 			format: 'binary',
 			url: fullUrl,
+			...extra
 		};
 	});
 

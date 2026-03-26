@@ -3,7 +3,7 @@
  * Contains unified rule structure and predefined rule sets
  */
 
-import { EXTERNAL_ADBLOCK_REIJI_URL, EXTERNAL_ADBLOCK_217_URL } from './ruleUrls.js';
+import { EXTERNAL_ADBLOCK_REIJI_URL, EXTERNAL_ADBLOCK_217_URL, EXTERNAL_GAMING_DIRECT_URL } from './ruleUrls.js';
 
 export const CUSTOM_RULES = [];
 
@@ -16,6 +16,11 @@ export const UNIFIED_RULES = [
 	{
 		name: 'Enhanced AdBlock (217)',
 		site_rules: ['217-adblock'],
+		ip_rules: []
+	},
+	{
+		name: 'Gaming-Direct',
+		site_rules: ['gaming-direct'],
 		ip_rules: []
 	},
 	{
@@ -121,11 +126,11 @@ export const UNIFIED_RULES = [
 ];
 
 // Rule names that should default to DIRECT instead of Node Select
-export const DIRECT_DEFAULT_RULES = new Set(['Private', 'Location:CN']);
+export const DIRECT_DEFAULT_RULES = new Set(['Private', 'Location:CN', 'Gaming-Direct']);
 
 export const PREDEFINED_RULE_SETS = {
 	minimal: ['Location:CN', 'Private', 'Non-China'],
-	balanced: ['Enhanced AdBlock (REIJI)', 'Enhanced AdBlock (217)', 'Google Gemini', 'Adobe', 'Location:CN', 'Private', 'Non-China', 'Github', 'Google', 'Youtube', 'AI Services', 'Telegram'],
+	balanced: ['Enhanced AdBlock (REIJI)', 'Enhanced AdBlock (217)', 'Gaming-Direct', 'Google Gemini', 'Adobe', 'Location:CN', 'Private', 'Non-China', 'Github', 'Google', 'Youtube', 'AI Services', 'Telegram'],
 	comprehensive: UNIFIED_RULES.map(rule => rule.name)
 };
 
@@ -136,6 +141,11 @@ export const SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 			acc[site_rule] = EXTERNAL_ADBLOCK_REIJI_URL;
 		} else if (site_rule === '217-adblock') {
 			acc[site_rule] = EXTERNAL_ADBLOCK_217_URL;
+		} else if (site_rule === 'gaming-direct') {
+			acc[site_rule] = {
+				url: EXTERNAL_GAMING_DIRECT_URL,
+				download_detour: 'outboundNames.Auto Select'
+			};
 		} else {
 			acc[site_rule] = `geosite-${site_rule}.srs`;
 		}

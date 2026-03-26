@@ -13,3 +13,4 @@ export const SURGE_IP_RULE_SET_BASEURL = 'https://gh-proxy.com/https://github.co
 // 第三方增强型广告过滤规则
 export const EXTERNAL_ADBLOCK_REIJI_URL = 'https://gh-proxy.com/https://raw.githubusercontent.com/REIJI007/AdBlock_Rule_For_Sing-box/main/adblock_reject.srs';
 export const EXTERNAL_ADBLOCK_217_URL = 'https://gh-proxy.com/https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblocksingbox.srs';
+export const EXTERNAL_GAMING_DIRECT_URL = 'https://github.com/TextlineX/GameRules/releases/latest/download/Gaming-Direct.srs';
