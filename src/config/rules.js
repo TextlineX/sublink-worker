@@ -10,44 +10,51 @@ export const CUSTOM_RULES = [];
 export const UNIFIED_RULES = [
 	{
 		name: '广告拦截',
-		site_rules: ['reiji-adblock', '217-adblock', 'category-ads-all'],
-		ip_rules: []
+		site_rules: ['reiji-adblock','217-adblock','category-ads-all'],
+		ip_rules: [],
+		outbound: 'REJECT'
 	},
 	{
 		name: '游戏直连',
 		site_rules: ['kg-mc'],
-		ip_rules: []
+		ip_rules: [],
+		outbound: 'DIRECT'
 	},
 	{
 		name: 'Google Gemini',
 		site_rules: ['google-gemini'],
-		ip_rules: []
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Adobe',
 		site_rules: ['adobe'],
-		ip_rules: []
+		ip_rules: [],
+		outbound: 'DIRECT'
 	},
-
 	{
 		name: 'AI Services',
-		site_rules: ['category-ai-!cn',],
-		ip_rules: []
+		site_rules: ['category-ai-!cn'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Bilibili',
 		site_rules: ['bilibili'],
-		ip_rules: []
+		ip_rules: [],
+		outbound: 'DIRECT'
 	},
 	{
 		name: 'Youtube',
 		site_rules: ['youtube'],
-		ip_rules: []
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Google',
 		site_rules: ['google'],
-		ip_rules: ['google']
+		ip_rules: ['google'],
+		type: 'urltest'
 	},
 	{
 		name: 'Private',
@@ -56,63 +63,75 @@ export const UNIFIED_RULES = [
 	},
 	{
 		name: 'Location:CN',
-		site_rules: ['geolocation-cn', 'cn'],
-		ip_rules: ['cn']
+		site_rules: ['geolocation-cn','cn'],
+		ip_rules: ['cn'],
+		outbound: 'DIRECT'
 	},
 	{
 		name: 'Telegram',
 		site_rules: [],
-		ip_rules: ['telegram']
+		ip_rules: ['telegram'],
+		type: 'urltest'
 	},
 	{
 		name: 'Github',
-		site_rules: ['github', 'gitlab'],
-		ip_rules: []
+		site_rules: ['github','gitlab'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Microsoft',
 		site_rules: ['microsoft'],
-		ip_rules: []
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Apple',
 		site_rules: ['apple'],
-		ip_rules: []
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Social Media',
-		site_rules: ['facebook', 'instagram', 'twitter', 'tiktok', 'linkedin'],
-		ip_rules: []
+		site_rules: ['facebook','instagram','twitter','tiktok','linkedin'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Streaming',
-		site_rules: ['netflix', 'hulu', 'disney', 'hbo', 'amazon', 'bahamut'],
-		ip_rules: []
+		site_rules: ['netflix','hulu','disney','hbo','amazon','bahamut'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Gaming',
-		site_rules: ['steam', 'epicgames', 'ea', 'ubisoft', 'blizzard'],
-		ip_rules: []
+		site_rules: ['steam','epicgames','ea','ubisoft','blizzard'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Education',
-		site_rules: ['coursera', 'edx', 'udemy', 'khanacademy', 'category-scholar-!cn'],
-		ip_rules: []
+		site_rules: ['coursera','edx','udemy','khanacademy','category-scholar-!cn'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Financial',
-		site_rules: ['paypal', 'visa', 'mastercard', 'stripe', 'wise'],
-		ip_rules: []
+		site_rules: ['paypal','visa','mastercard','stripe','wise'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Cloud Services',
-		site_rules: ['aws', 'azure', 'digitalocean', 'heroku', 'dropbox'],
-		ip_rules: []
+		site_rules: ['aws','azure','digitalocean','heroku','dropbox'],
+		ip_rules: [],
+		type: 'urltest'
 	},
 	{
 		name: 'Non-China',
 		site_rules: ['geolocation-!cn'],
-		ip_rules: []
+		ip_rules: [],
+		type: 'urltest'
 	}
 ];
 

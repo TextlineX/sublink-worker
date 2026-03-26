@@ -47,7 +47,7 @@ export function generateRules(selectedRules = [], customRules = []) {
 				ip_rules: rule.ip_rules,
 				domain_suffix: rule?.domain_suffix,
 				ip_cidr: rule?.ip_cidr,
-				outbound: rule.name
+				outbound: rule.outbound || rule.name
 			});
 		}
 	});
