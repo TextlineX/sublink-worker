@@ -92,6 +92,31 @@ export function generateSubconverterConfig({ selectedRules = [], customRules = [
 				if (cidr) lines.push(`ruleset=${groupName},[]IP-CIDR,${cidr}`);
 			});
 		}
+		if (rule.process_name) {
+			rule.process_name.forEach(name => {
+				if (name) lines.push(`ruleset=${groupName},[]PROCESS-NAME,${name}`);
+			});
+		}
+		if (rule.package_name) {
+			rule.package_name.forEach(name => {
+				if (name) lines.push(`ruleset=${groupName},[]PACKAGE-NAME,${name}`);
+			});
+		}
+		if (rule.wifi_ssid) {
+			rule.wifi_ssid.forEach(ssid => {
+				if (ssid) lines.push(`ruleset=${groupName},[]WIFI-SSID,${ssid}`);
+			});
+		}
+		if (rule.network) {
+			rule.network.forEach(net => {
+				if (net) lines.push(`ruleset=${groupName},[]NETWORK,${net}`);
+			});
+		}
+		if (rule.protocol) {
+			rule.protocol.forEach(proto => {
+				if (proto) lines.push(`ruleset=${groupName},[]PROTOCOL,${proto}`);
+			});
+		}
 	});
 
 	// FINAL rule

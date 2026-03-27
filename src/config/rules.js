@@ -11,14 +11,12 @@ export const UNIFIED_RULES = [
 	{
 		name: '广告拦截',
 		site_rules: ['reiji-adblock','217-adblock','category-ads-all'],
-		ip_rules: [],
-		outbound: 'REJECT'
+		ip_rules: []
 	},
 	{
 		name: '游戏直连',
 		site_rules: ['kg-mc','steam-direct'],
-		ip_rules: [],
-		outbound: 'DIRECT'
+		ip_rules: []
 	},
 	{
 		name: 'Google Gemini',
@@ -29,8 +27,7 @@ export const UNIFIED_RULES = [
 	{
 		name: 'Adobe',
 		site_rules: ['adobe'],
-		ip_rules: [],
-		outbound: 'DIRECT'
+		ip_rules: []
 	},
 	{
 		name: 'AI Services',
@@ -41,8 +38,7 @@ export const UNIFIED_RULES = [
 	{
 		name: 'Bilibili',
 		site_rules: ['bilibili'],
-		ip_rules: [],
-		outbound: 'DIRECT'
+		ip_rules: []
 	},
 	{
 		name: 'Youtube',
@@ -64,8 +60,7 @@ export const UNIFIED_RULES = [
 	{
 		name: 'Location:CN',
 		site_rules: ['geolocation-cn','cn'],
-		ip_rules: ['cn'],
-		outbound: 'DIRECT'
+		ip_rules: ['cn']
 	},
 	{
 		name: 'Telegram',
@@ -147,21 +142,25 @@ export const PREDEFINED_RULE_SETS = {
 	comprehensive: UNIFIED_RULES.map(rule => rule.name)
 };
 
+// Rule Set Mappings
+// Maps site_rule tags to their external URLs or specific configurations
+// Dashboard and scripts should update this object
+export const EXTERNAL_RULE_MAPPINGS = {
+	'reiji-adblock': EXTERNAL_ADBLOCK_REIJI_URL,
+	'217-adblock': EXTERNAL_ADBLOCK_217_URL,
+	'kg-mc': {
+		url: EXTERNAL_GAMING_DIRECT_URL,
+		download_detour: 'outboundNames.Auto Select'
+	},
+	'steam-direct': EXTERNAL_STEAM_DIRECT_URL
+};
+
 // Generate SITE_RULE_SETS and IP_RULE_SETS from UNIFIED_RULES
 export const SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 	rule.site_rules.forEach(site_rule => {
-		if (site_rule === 'reiji-adblock') {
-			acc[site_rule] = EXTERNAL_ADBLOCK_REIJI_URL;
-		} else if (site_rule === '217-adblock') {
-			acc[site_rule] = EXTERNAL_ADBLOCK_217_URL;
-		} else if (site_rule === 'kg-mc') {
-			acc[site_rule] = {
-				url: EXTERNAL_GAMING_DIRECT_URL,
-				download_detour: 'outboundNames.Auto Select'
-			};
-				} else if (site_rule === 'steam-direct') {
-			acc[site_rule] = EXTERNAL_STEAM_DIRECT_URL;
-} else {
+		if (EXTERNAL_RULE_MAPPINGS[site_rule]) {
+			acc[site_rule] = EXTERNAL_RULE_MAPPINGS[site_rule];
+		} else {
 			acc[site_rule] = `geosite-${site_rule}.srs`;
 		}
 	});
@@ -178,7 +177,14 @@ export const IP_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 // Generate CLASH_SITE_RULE_SETS and CLASH_IP_RULE_SETS for .mrs format
 export const CLASH_SITE_RULE_SETS = UNIFIED_RULES.reduce((acc, rule) => {
 	rule.site_rules.forEach(site_rule => {
-		acc[site_rule] = `${site_rule}.mrs`;
+		if (EXTERNAL_RULE_MAPPINGS[site_rule]) {
+			const mapping = EXTERNAL_RULE_MAPPINGS[site_rule];
+			const url = typeof mapping === 'string' ? mapping : mapping.url;
+			// Replace extension for Clash if it looks like a sing-box .srs
+			acc[site_rule] = url.replace(/\.srs$/, '.mrs');
+		} else {
+			acc[site_rule] = `${site_rule}.mrs`;
+		}
 	});
 	return acc;
 }, {});

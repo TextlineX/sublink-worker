@@ -279,30 +279,32 @@ describe('GET /subconverter', () => {
     });
 
     describe('invalid selectedRules', () => {
-        it('returns 400 for invalid preset name', async () => {
+        it('returns 200 with fallback for invalid preset name', async () => {
             const app = createTestApp();
             const res = await app.request('http://localhost/subconverter?selectedRules=balancde');
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(200);
             const text = await res.text();
-            expect(text).toContain('Invalid selectedRules');
-            expect(text).toContain('balancde');
+            // Should fallback to minimal
+            expect(text).toContain('GEOSITE,geolocation-cn');
         });
 
-        it('returns 400 for non-JSON non-preset string', async () => {
+        it('returns 200 with fallback for non-JSON non-preset string', async () => {
             const app = createTestApp();
             const res = await app.request('http://localhost/subconverter?selectedRules=foobar');
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(200);
             const text = await res.text();
-            expect(text).toContain('Invalid selectedRules');
+            // Should fallback to minimal
+            expect(text).toContain('GEOSITE,geolocation-cn');
         });
 
-        it('returns 400 for JSON object (not array)', async () => {
+        it('returns 200 with fallback for JSON object (not array)', async () => {
             const app = createTestApp();
             const obj = JSON.stringify({ rule: 'Google' });
             const res = await app.request(`http://localhost/subconverter?selectedRules=${encodeURIComponent(obj)}`);
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(200);
             const text = await res.text();
-            expect(text).toContain('must be a preset name');
+            // Should fallback to minimal
+            expect(text).toContain('GEOSITE,geolocation-cn');
         });
 
         it('defaults to balanced when selectedRules is not provided', async () => {

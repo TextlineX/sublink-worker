@@ -52,6 +52,38 @@ export function emitClashRules(rules = [], translator) {
             });
         });
 
+    rules
+        .filter(rule => Array.isArray(rule.process_name) && rule.process_name.length > 0)
+        .forEach(rule => {
+            rule.process_name.forEach(name => {
+                results.push(`PROCESS-NAME,${name},${translator('outboundNames.' + rule.outbound)}`);
+            });
+        });
+
+    rules
+        .filter(rule => Array.isArray(rule.package_name) && rule.package_name.length > 0)
+        .forEach(rule => {
+            rule.package_name.forEach(name => {
+                results.push(`PACKAGE-NAME,${name},${translator('outboundNames.' + rule.outbound)}`);
+            });
+        });
+
+    rules
+        .filter(rule => Array.isArray(rule.wifi_ssid) && rule.wifi_ssid.length > 0)
+        .forEach(rule => {
+            rule.wifi_ssid.forEach(ssid => {
+                results.push(`WIFI-SSID,${ssid},${translator('outboundNames.' + rule.outbound)}`);
+            });
+        });
+
+    rules
+        .filter(rule => Array.isArray(rule.network) && rule.network.length > 0)
+        .forEach(rule => {
+            rule.network.forEach(net => {
+                results.push(`NETWORK,${net},${translator('outboundNames.' + rule.outbound)}`);
+            });
+        });
+
     return results;
 }
 

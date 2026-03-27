@@ -36,9 +36,9 @@ async function saveRules(rules, urlMappings = {}) {
         if (!urlsContent.includes(key)) {
             urlsContent = urlsContent.trim() + `\nexport const ${key} = '${url}';\n`;
             
-            // 在 rules.js 生成映射逻辑
-            const injection = `		} else if (site_rule === '${tag}') {\n			acc[site_rule] = ${key};`;
-            rulesContent = rulesContent.replace(/(if \(site_rule === 'reiji-adblock'\) {[\s\S]*?)(} else {)/, `$1${injection}\n$2`);
+            // 更新 rules.js 的 EXTERNAL_RULE_MAPPINGS
+            const mappingEntry = `\t'${tag}': ${key},`;
+            rulesContent = rulesContent.replace(/(export const EXTERNAL_RULE_MAPPINGS = {)/, `$1\n${mappingEntry}`);
             
             // 更新 rules.js 的 import
             const importMatch = rulesContent.match(/import { ([\s\S]*?) } from '\.\/ruleUrls\.js';/);
@@ -62,6 +62,7 @@ async function saveRules(rules, urlMappings = {}) {
 		ip_rules: ${JSON.stringify(r.ip_rules || []).replace(/"/g, "'")}${r.type ? `,\n		type: '${r.type}'` : ''}${r.outbound ? `,\n		outbound: '${r.outbound}'` : ''}
 	}`).join(',\n') + '\n];';
 
+    // More robust replacement using a more specific regex
     const updated = rulesContent.replace(/export const UNIFIED_RULES = \[[\s\S]*?\];/, rulesCode);
     await fs.writeFile(RULES_PATH, updated, 'utf-8');
 }

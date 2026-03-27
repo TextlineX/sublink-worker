@@ -46,7 +46,14 @@ export function generateRules(selectedRules = [], customRules = []) {
 				site_rules: rule.site_rules,
 				ip_rules: rule.ip_rules,
 				domain_suffix: rule?.domain_suffix,
+				domain_keyword: rule?.domain_keyword,
 				ip_cidr: rule?.ip_cidr,
+				src_ip_cidr: rule?.src_ip_cidr,
+				protocol: rule?.protocol,
+				process_name: rule?.process_name,
+				package_name: rule?.package_name,
+				wifi_ssid: rule?.wifi_ssid,
+				network: rule?.network,
 				outbound: rule.outbound || rule.name
 			});
 		}
@@ -62,6 +69,10 @@ export function generateRules(selectedRules = [], customRules = []) {
 			ip_cidr: toStringArray(rule.ip_cidr),
 			src_ip_cidr: toStringArray(rule.src_ip_cidr),
 			protocol: toStringArray(rule.protocol),
+			process_name: toStringArray(rule.process_name),
+			package_name: toStringArray(rule.package_name),
+			wifi_ssid: toStringArray(rule.wifi_ssid),
+			network: toStringArray(rule.network),
 			outbound: rule.name
 		});
 	});
@@ -189,11 +200,13 @@ export function generateClashRuleSets(selectedRules = [], customRules = [], useM
 	const ip_rule_providers = {};
 
 	Array.from(siteRuleSets).forEach(rule => {
+		const ruleConfig = CLASH_SITE_RULE_SETS[rule];
+		const url = ruleConfig.startsWith('http') ? ruleConfig : `${CLASH_SITE_RULE_SET_BASE_URL}${ruleConfig}`;
 		site_rule_providers[rule] = {
 			type: 'http',
 			format: format,
 			behavior: 'domain',
-			url: `${CLASH_SITE_RULE_SET_BASE_URL}${rule}${ext}`,
+			url: url,
 			path: `./ruleset/${rule}${ext}`,
 			interval: 86400
 		};

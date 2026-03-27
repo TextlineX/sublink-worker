@@ -1,0 +1,28 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90mH:/Project/sublink-worker[39m
+
+Proxy environment variables detected. We'll use your proxy for fetch requests.
+[vpw:debug] Adding `enable_nodejs_tty_module` compatibility flag during tests as this feature is needed to support the Vitest runner.
+[vpw:debug] Adding `enable_nodejs_fs_module` compatibility flag during tests as this feature is needed to support the Vitest runner.
+[vpw:debug] Adding `enable_nodejs_http_modules` compatibility flag during tests as this feature is needed to support the Vitest runner.
+[vpw:debug] Adding `enable_nodejs_perf_hooks_module` compatibility flag during tests as this feature is needed to support the Vitest runner.
+[vpw:info] Starting isolated runtimes for vitest.config.js...
+[90mstderr[2m | test/subconverter-endpoint.test.js[2m > [22m[2mGET /subconverter[2m > [22m[2minvalid selectedRules[2m > [22m[2mreturns 200 with fallback for invalid preset name
+[22m[39mFailed to parse selectedRules: balancde, falling back to balanced
+
+[90mstderr[2m | test/subconverter-endpoint.test.js[2m > [22m[2mGET /subconverter[2m > [22m[2minvalid selectedRules[2m > [22m[2mreturns 200 with fallback for non-JSON non-preset string
+[22m[39mFailed to parse selectedRules: foobar, falling back to balanced
+
+[90mstderr[2m | test/subconverter-endpoint.test.js[2m > [22m[2mGET /subconverter[2m > [22m[2minvalid selectedRules[2m > [22m[2mreturns 200 with fallback for JSON object (not array)
+[22m[39mFailed to parse selectedRules: {"rule":"Google"}, falling back to balanced
+
+ [32m✓[39m test/subconverter-endpoint.test.js [2m([22m[2m24 tests[22m[2m)[22m[32m 129[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m24 passed[39m[22m[90m (24)[39m
+[2m   Start at [22m 16:40:39
+[2m   Duration [22m 1.99s[2m (transform 176ms, setup 0ms, collect 463ms, tests 129ms, environment 0ms, prepare 205ms)[22m
+
+[vpw:debug] Shutting down runtimes...
+vitest-pool-worker: Unable to remove temporary directory: Error: EBUSY: resource busy or locked, rmdir 'C:\Users\Textline\AppData\Local\Temp\miniflare-2443878c9f5d2ce6c8c08057246b33f2\cache\miniflare-CacheObject'
+vitest-pool-worker: Unable to remove temporary directory: Error: EBUSY: resource busy or locked, rmdir 'C:\Users\Textline\AppData\Local\Temp\miniflare-2443878c9f5d2ce6c8c08057246b33f2\kv\miniflare-KVNamespaceObject'

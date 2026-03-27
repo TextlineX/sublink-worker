@@ -64,4 +64,14 @@ describe('selectedRules backward compatibility', () => {
         const result = parseSelectedRules(jsonObject);
         expect(result).toEqual([]);
     });
+
+    it('should parse comma-separated string', () => {
+        const result = parseSelectedRules('Google,Youtube, Github');
+        expect(result).toEqual(['Google', 'Youtube', 'Github']);
+    });
+
+    it('should parse single rule name as string', () => {
+        const result = parseSelectedRules('广告拦截');
+        expect(result).toEqual(['广告拦截']);
+    });
 });

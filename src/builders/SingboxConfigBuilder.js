@@ -435,10 +435,12 @@ export class SingboxConfigBuilder extends BaseConfigBuilder {
         // Validate outbounds: fill empty urltest groups with all proxies
         this.validateOutbounds();
 
-        const attachProtocolIfNeeded = (entry, rule) => {
-            if (Array.isArray(rule?.protocol) && rule.protocol.length > 0) {
-                entry.protocol = rule.protocol;
-            }
+        const attachExtras = (entry, rule) => {
+            if (hasMatchValues(rule.protocol)) entry.protocol = rule.protocol;
+            if (hasMatchValues(rule.process_name)) entry.process_name = rule.process_name;
+            if (hasMatchValues(rule.package_name)) entry.package_name = rule.package_name;
+            if (hasMatchValues(rule.wifi_ssid)) entry.wifi_ssid = rule.wifi_ssid;
+            if (hasMatchValues(rule.network)) entry.network = rule.network;
             return entry;
         };
 
@@ -448,8 +450,8 @@ export class SingboxConfigBuilder extends BaseConfigBuilder {
             return false;
         };
 
-        rules.filter(rule => Array.isArray(rule.src_ip_cidr) && rule.src_ip_cidr.length > 0).map(rule => {
-            this.config.route.rules.push(attachProtocolIfNeeded({
+        rules.filter(rule => hasMatchValues(rule.src_ip_cidr)).map(rule => {
+            this.config.route.rules.push(attachExtras({
                 source_ip_cidr: rule.src_ip_cidr,
                 outbound: this.t(`outboundNames.${rule.outbound}`)
             }, rule));
@@ -463,11 +465,11 @@ export class SingboxConfigBuilder extends BaseConfigBuilder {
             if (hasMatchValues(rule.domain_suffix)) entry.domain_suffix = rule.domain_suffix;
             if (hasMatchValues(rule.domain_keyword)) entry.domain_keyword = rule.domain_keyword;
 
-            this.config.route.rules.push(attachProtocolIfNeeded(entry, rule));
+            this.config.route.rules.push(attachExtras(entry, rule));
         });
 
         rules.filter(rule => !!rule.site_rules[0]).map(rule => {
-            this.config.route.rules.push(attachProtocolIfNeeded({
+            this.config.route.rules.push(attachExtras({
                 rule_set: [
                     ...(rule.site_rules.length > 0 && rule.site_rules[0] !== '' ? rule.site_rules : []),
                 ],
@@ -476,7 +478,7 @@ export class SingboxConfigBuilder extends BaseConfigBuilder {
         });
 
         rules.filter(rule => !!rule.ip_rules[0]).map(rule => {
-            this.config.route.rules.push(attachProtocolIfNeeded({
+            this.config.route.rules.push(attachExtras({
                 rule_set: [
                     ...(rule.ip_rules
                         .map(ip => ip.trim())
@@ -488,8 +490,23 @@ export class SingboxConfigBuilder extends BaseConfigBuilder {
         });
 
         rules.filter(rule => hasMatchValues(rule.ip_cidr)).map(rule => {
-            this.config.route.rules.push(attachProtocolIfNeeded({
+            this.config.route.rules.push(attachExtras({
                 ip_cidr: rule.ip_cidr,
+                outbound: this.t(`outboundNames.${rule.outbound}`)
+            }, rule));
+        });
+
+        // Handle rules that have ONLY the extra fields (no traditional site/ip/domain match)
+        rules.filter(rule => 
+            !hasMatchValues(rule.site_rules) && 
+            !hasMatchValues(rule.ip_rules) && 
+            !hasMatchValues(rule.domain_suffix) && 
+            !hasMatchValues(rule.domain_keyword) && 
+            !hasMatchValues(rule.ip_cidr) && 
+            !hasMatchValues(rule.src_ip_cidr) && 
+            (hasMatchValues(rule.process_name) || hasMatchValues(rule.package_name) || hasMatchValues(rule.wifi_ssid) || hasMatchValues(rule.network) || hasMatchValues(rule.protocol))
+        ).map(rule => {
+            this.config.route.rules.push(attachExtras({
                 outbound: this.t(`outboundNames.${rule.outbound}`)
             }, rule));
         });

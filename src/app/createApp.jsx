@@ -16,7 +16,7 @@ import { ShortLinkService } from '../services/shortLinkService.js';
 import { ConfigStorageService } from '../services/configStorageService.js';
 import { ServiceError, MissingDependencyError } from '../services/errors.js';
 import { normalizeRuntime } from '../runtime/runtimeConfig.js';
-import { PREDEFINED_RULE_SETS, SING_BOX_CONFIG, SING_BOX_CONFIG_V1_11, generateSubconverterConfig } from '../config/index.js';
+import { PREDEFINED_RULE_SETS, UNIFIED_RULES, SING_BOX_CONFIG, SING_BOX_CONFIG_V1_11, generateSubconverterConfig } from '../config/index.js';
 
 const DEFAULT_USER_AGENT = 'curl/7.74.0';
 
@@ -209,25 +209,7 @@ export function createApp(bindings = {}) {
 
     app.get('/subconverter', (c) => {
         try {
-            const rawSelectedRules = c.req.query('selectedRules');
-            let selectedRules;
-
-            if (!rawSelectedRules) {
-                selectedRules = PREDEFINED_RULE_SETS.balanced;
-            } else if (PREDEFINED_RULE_SETS[rawSelectedRules]) {
-                selectedRules = PREDEFINED_RULE_SETS[rawSelectedRules];
-            } else {
-                try {
-                    const parsed = JSON.parse(rawSelectedRules);
-                    if (Array.isArray(parsed)) {
-                        selectedRules = parsed;
-                    } else {
-                        return c.text('Invalid selectedRules: must be a preset name (minimal, balanced, comprehensive) or a JSON array', 400);
-                    }
-                } catch {
-                    return c.text(`Invalid selectedRules: "${rawSelectedRules}" is not a valid preset name or JSON array. Valid presets: minimal, balanced, comprehensive`, 400);
-                }
-            }
+            const selectedRules = parseSelectedRules(c.req.query('selectedRules'), 'balanced');
 
             const includeAutoSelect = c.req.query('include_auto_select') !== 'false';
             const groupByCountry = parseBooleanFlag(c.req.query('group_by_country'));
@@ -391,24 +373,35 @@ export function createApp(bindings = {}) {
     return app;
 }
 
-export function parseSelectedRules(raw) {
-    if (!raw) return [];
+export function parseSelectedRules(raw, defaultPreset = 'minimal') {
+    if (!raw) return PREDEFINED_RULE_SETS[defaultPreset] || [];
 
-    // 首先检查是否是预设名称 (minimal, balanced, comprehensive)
-    // 这确保向后兼容主分支的 API 行为
+    // First check if it's a preset name
     if (typeof raw === 'string' && PREDEFINED_RULE_SETS[raw]) {
         return PREDEFINED_RULE_SETS[raw];
     }
 
-    // 尝试解析为 JSON 数组
+    // Try to parse as JSON
     try {
         const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        // 解析失败，回退到 minimal 预设
-        console.warn(`Failed to parse selectedRules: ${raw}, falling back to minimal`);
-        return PREDEFINED_RULE_SETS.minimal;
+        if (Array.isArray(parsed)) return parsed;
+    } catch (e) {
+        // If not JSON, check if it's a comma-separated string
+        if (typeof raw === 'string') {
+            const split = raw.split(',').map(r => r.trim()).filter(Boolean);
+            if (split.length > 0) {
+                const hasKnownRule = split.some(name => 
+                    UNIFIED_RULES.some(rule => rule.name === name) || 
+                    PREDEFINED_RULE_SETS[name]
+                );
+                if (hasKnownRule) return split;
+            }
+        }
     }
+
+    // Fallback to default preset
+    console.warn(`Failed to parse selectedRules: ${raw}, falling back to ${defaultPreset}`);
+    return PREDEFINED_RULE_SETS[defaultPreset] || [];
 }
 
 function parseJsonArray(raw) {

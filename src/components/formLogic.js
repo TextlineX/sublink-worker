@@ -601,9 +601,17 @@ export const formLogicFn = (t) => {
                             if (Array.isArray(parsed)) {
                                 this.selectedRules = parsed;
                                 this.selectedPredefinedRule = 'custom';
+                            } else {
+                                this.selectedRules = [];
+                                this.selectedPredefinedRule = 'custom';
                             }
                         } catch (e) {
-                            console.warn('Failed to parse selectedRules:', e);
+                            // Robustness: handle comma-separated strings
+                            const split = selectedRules.split(',').map(r => r.trim()).filter(Boolean);
+                            if (split.length > 0) {
+                                this.selectedRules = split;
+                                this.selectedPredefinedRule = 'custom';
+                            }
                         }
                     }
                 }
